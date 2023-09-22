@@ -12,7 +12,8 @@ They will be greeted with a dropdown selection of every active user in the game 
 
 Simply press Start to play! After doing so, both players will be greeted with a selection of: Rock, Paper, or Scissors! Both players must click on **Shoot!** to finish the game!
 
-
+![image](https://github.com/therealguy90/fvtt-rps/assets/100253440/3099105c-5bf9-44a7-b7cc-3fbac3283bd3)
+![image](https://github.com/therealguy90/fvtt-rps/assets/100253440/ba6540f7-f99e-495f-9990-ed65e4bd8e4d)
 
 The results will be posted publicly.
 
