@@ -20,4 +20,4 @@ The results will be posted publicly.
 
 ---
 
-Clip art used for Rock, Paper, and Scissors are available using the [Creative Commons Zero 1.0 Public Domain License](http://creativecommons.org/publicdomain/zero/1.0/) and are thus free and available for unlimited use.
+Clip art used for [Rock, Paper, and Scissors](https://openclipart.org/detail/213382/rockpaperscissors) are available using the [Creative Commons Zero 1.0 Public Domain License](http://creativecommons.org/publicdomain/zero/1.0/) and are thus free and available for unlimited use.
