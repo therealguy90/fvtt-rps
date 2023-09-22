@@ -8,7 +8,7 @@ Requires socketlib and a GM to be online in the world.
 The first player must type `rps` in the chat.
 They will be greeted with a dropdown selection of every active user in the game world to play Rock, Paper, Scissors with!
 
-![image](https://github.com/therealguy90/fvtt-rps/assets/100253440/62482d50-1191-40f4-84e3-18d867b86f84)
+![image](https://github.com/therealguy90/fvtt-rps/assets/100253440/12001a62-2f4e-4fa5-8449-ba29f258668e)
 
 Simply press Start to play! After doing so, both players will be greeted with a selection of: Rock, Paper, or Scissors! Both players must click on **Shoot!** to finish the game!
 
