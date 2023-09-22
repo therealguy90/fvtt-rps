@@ -61,7 +61,6 @@ function addSelectionListeners(messageid, html) {
     const paperButton = html.querySelector('.rpsButton[data-choice="Paper"]');
     const scissorsButton = html.querySelector('.rpsButton[data-choice="Scissors"]');
     const shootButton = html.querySelector('.rpsShootButton');
-    shootButton.disabled = true;
     const setSelectedChoiceBackgroundColor = (selectedChoice) => {
         const buttonElements = {
             Rock: html.querySelector('.rpsButton[data-choice="Rock"]'),
@@ -76,61 +75,65 @@ function addSelectionListeners(messageid, html) {
         }
     };
     let selectedChoice;
-    rockButton.addEventListener('click', () => {
-        // Disable Rock, enable Paper and Scissors
-        rockButton.disabled = true;
-        paperButton.disabled = false;
-        scissorsButton.disabled = false;
-        shootButton.disabled = false;
-        selectedChoice = "rock";
-        setSelectedChoiceBackgroundColor('Rock');
-    });
+    if (rockButton && paperButton && scissorsButton) {
+        rockButton.addEventListener('click', () => {
+            // Disable Rock, enable Paper and Scissors
+            rockButton.disabled = true;
+            paperButton.disabled = false;
+            scissorsButton.disabled = false;
+            shootButton.disabled = false;
+            selectedChoice = "rock";
+            setSelectedChoiceBackgroundColor('Rock');
+        });
 
-    paperButton.addEventListener('click', () => {
-        // Disable Paper, enable Rock and Scissors
-        rockButton.disabled = false;
-        paperButton.disabled = true;
-        scissorsButton.disabled = false;
-        shootButton.disabled = false;
-        selectedChoice = "paper";
-        setSelectedChoiceBackgroundColor('Paper');
-    });
+        paperButton.addEventListener('click', () => {
+            // Disable Paper, enable Rock and Scissors
+            rockButton.disabled = false;
+            paperButton.disabled = true;
+            scissorsButton.disabled = false;
+            shootButton.disabled = false;
+            selectedChoice = "paper";
+            setSelectedChoiceBackgroundColor('Paper');
+        });
 
-    scissorsButton.addEventListener('click', () => {
-        // Disable Scissors, enable Rock and Paper
-        rockButton.disabled = false;
-        paperButton.disabled = false;
-        scissorsButton.disabled = true;
-        shootButton.disabled = false;
-        selectedChoice = "scissors";
-        setSelectedChoiceBackgroundColor('Scissors');
-    });
-
-    shootButton.addEventListener('click', () => {
-        const message = game.messages.get(messageid);
-        const linkedMessage = game.messages.get(message.flags.rockpaperscissors.linkedMessage);
-        if (!linkedMessage.flags.rockpaperscissors.ready) {
-            socket.executeAsGM("updateMessageRPS", message.id, { content: "You chose <strong>" + selectedChoice + "</strong>! Waiting for " + linkedMessage.user.name + " to make their choice...", flags: { rockpaperscissors: { ready: true, choice: selectedChoice } } });
-        }
-        else {
-            const linkedMessageChoice = linkedMessage.flags.rockpaperscissors.choice;
-            const messageChoice = selectedChoice
-            const cardTitle = message.user.name + " and " + linkedMessage.user.name + " played Rock, Paper, Scissors!";
-            let result = message.user.name + " played <strong>" + messageChoice + "</strong>!<br><br>" + linkedMessage.user.name + " played <strong>" + linkedMessageChoice + "</strong>!<br><br>";
-            if (messageChoice === linkedMessageChoice) {
-                result += "<strong>It's a tie!</strong>";
-            }
-            else if ((messageChoice === "scissors" && linkedMessageChoice === "paper") || (messageChoice === "paper" && linkedMessageChoice === "rock") || (messageChoice === "scissors" && linkedMessageChoice === "paper")) {
-                result += "<strong>" + message.user.name + " won! </strong>";
+        scissorsButton.addEventListener('click', () => {
+            // Disable Scissors, enable Rock and Paper
+            rockButton.disabled = false;
+            paperButton.disabled = false;
+            scissorsButton.disabled = true;
+            shootButton.disabled = false;
+            selectedChoice = "scissors";
+            setSelectedChoiceBackgroundColor('Scissors');
+        });
+    }
+    if (shootButton) {
+        shootButton.disabled = true;
+        shootButton.addEventListener('click', () => {
+            const message = game.messages.get(messageid);
+            const linkedMessage = game.messages.get(message.flags.rockpaperscissors.linkedMessage);
+            if (!linkedMessage.flags.rockpaperscissors.ready) {
+                socket.executeAsGM("updateMessageRPS", message.id, { content: "You chose <strong>" + selectedChoice + "</strong>! Waiting for " + linkedMessage.user.name + " to make their choice...", flags: { rockpaperscissors: { ready: true, choice: selectedChoice } } });
             }
             else {
-                result += "<strong>" + linkedMessage.user.name + " won! </strong>";
+                const linkedMessageChoice = linkedMessage.flags.rockpaperscissors.choice;
+                const messageChoice = selectedChoice
+                const cardTitle = message.user.name + " and " + linkedMessage.user.name + " played Rock, Paper, Scissors!";
+                let result = message.user.name + " played <strong>" + messageChoice + "</strong>!<br><br>" + linkedMessage.user.name + " played <strong>" + linkedMessageChoice + "</strong>!<br><hr />";
+                if (messageChoice === linkedMessageChoice) {
+                    result += "<strong>It's a tie!</strong>";
+                }
+                else if ((messageChoice === "scissors" && linkedMessageChoice === "paper") || (messageChoice === "paper" && linkedMessageChoice === "rock") || (messageChoice === "scissors" && linkedMessageChoice === "paper")) {
+                    result += "<strong>" + message.user.name + " won! </strong>";
+                }
+                else {
+                    result += "<strong>" + linkedMessage.user.name + " won! </strong>";
+                }
+                ChatMessage.create({ speaker: { alias: "Rock, Paper, Scissors!" }, content: `<div style="text-align: center;" class="chat-card"><header class="card-header flexrow"><h3>` + cardTitle + `</h3></header><section class="card-content">` + result + `</section></div>` })
+                socket.executeAsGM("deleteMessageRPS", message.id);
+                socket.executeAsGM("deleteMessageRPS", linkedMessage.id);
             }
-            ChatMessage.create({ speaker: { alias: "Rock, Paper, Scissors!" }, content: `<div style="text-align: center;" class="chat-card"><header class="card-header flexrow"><h3>` + cardTitle + `</h3></header><section class="card-content">` + result + `</section></div>` })
-            socket.executeAsGM("deleteMessageRPS", message.id);
-            socket.executeAsGM("deleteMessageRPS", linkedMessage.id);
-        }
-    })
+        })
+    }
 }
 
 
