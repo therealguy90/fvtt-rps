@@ -1,5 +1,5 @@
 let socket;
-let selectedUserId; // Declare selectedUserId variable
+let selectedUserId;
 
 Hooks.once("socketlib.ready", () => {
     socket = socketlib.registerModule("rockpaperscissors");
@@ -122,7 +122,7 @@ function addSelectionListeners(messageid, html) {
                 if (messageChoice === linkedMessageChoice) {
                     result += "<strong>It's a tie!</strong>";
                 }
-                else if ((messageChoice === "scissors" && linkedMessageChoice === "paper") || (messageChoice === "paper" && linkedMessageChoice === "rock") || (messageChoice === "scissors" && linkedMessageChoice === "paper")) {
+                else if ((messageChoice === "scissors" && linkedMessageChoice === "paper") || (messageChoice === "paper" && linkedMessageChoice === "rock") || (messageChoice === "rock" && linkedMessageChoice === "scissors")) {
                     result += "<strong>" + message.user.name + " won! </strong>";
                 }
                 else {
