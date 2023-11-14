@@ -1,5 +1,5 @@
 let socket;
-let selectedUserId; // Declare selectedUserId variable
+let selectedUserId;
 
 Hooks.once("socketlib.ready", () => {
     socket = socketlib.registerModule("rockpaperscissors");
